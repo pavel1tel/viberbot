@@ -4,6 +4,7 @@ from bot import db
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_viber_id=db.Column(db.String(150), unique=True)
+    nickname = db.Column(db.String(50))
     quer = db.relationship('Query', backref='user', uselist=False)
     zakazi = db.relationship('Zakaz', backref='user', uselist=True)
     novaposhta = db.relationship('NP', backref='user', uselist=False)
@@ -13,10 +14,10 @@ class User(db.Model):
 class Query(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    query_number = db.Column(db.String(10))
+    query_number = db.Column(db.String(4))
     zakaz_num = db.Column(db.Integer)
     def __repr__(self):
-        return f"Lol"
+        return f""
 
 class Zakaz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
