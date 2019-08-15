@@ -1,0 +1,60 @@
+{
+	"Type": "keyboard",
+	"Buttons": [{
+		"Columns": 6,
+		"Rows": 1,
+		"Text": "ФОП Готько",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "ФОП Готько"
+	}, {
+		"Columns": 6,
+		"Rows": 1,
+		"Text": "Полина",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Полина"
+        },{
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "JUST Jewellery",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+               	"ActionBody": "JUST Jewellery"
+        },{
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Silverado",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Silverado"
+        },{
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Poli",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Poli"
+        }, {
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Цепочки",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Цепочки"
+        }, {
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Вернутся на главное меню",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Вернутся на главное меню"
+        }]
+}       

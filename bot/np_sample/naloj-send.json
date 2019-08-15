@@ -1,0 +1,38 @@
+{
+    "apiKey": "0b384b2d985b261d632080c6dc3a5249",
+    "modelName": "InternetDocument",
+    "calledMethod": "save",
+    "methodProperties": {
+            "NewAddress": "1",
+            "PayerType": "",
+            "PaymentMethod": "Cash",
+            "CargoType": "Parcel",
+            "VolumeGeneral": "0.0004",
+            "Weight": "0.3",
+            "ServiceType": "WarehouseWarehouse",
+            "SeatsAmount": "1",
+            "Description": "Запчасти",
+            "Cost": "",
+            "CitySender": "e7148607-4b33-11e4-ab6d-005056801329",
+            "Sender": "5dc3439b-53f9-11e6-a54a-005056801333",
+            "SenderAddress": "00000000-0000-0000-0000-000000000000",
+            "ContactSender": "a60287c5-ccc7-11e8-8b24-005056881c6b",
+            "SendersPhone": "380637097993",
+            "RecipientCityName": "",
+            "RecipientArea": "",
+            "RecipientAreaRegions": "",
+            "RecipientAddressName": "",
+            "RecipientHouse": "",
+            "RecipientFlat": "",
+            "RecipientName": "",
+            "RecipientType": "PrivatePerson",
+            "RecipientsPhone": "",
+            "DateTime": "",
+            "BackwardDeliveryData": [ 
+                        { 
+                        "PayerType": "Recipient", 
+                        "CargoType": "Money", 
+                        "RedeliveryString": "" 
+                        } ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+	"Type": "keyboard",
+	"Buttons": [{
+		"Columns": 3,
+		"Rows": 2,
+		"Text": "Да",
+                "TextSize": "medium",
+		"TextHAlign": "center",
+		"ActionType": "reply",
+		"ActionBody": "Yes"
+	}, {
+		"Columns": 3,
+		"Rows": 2,
+		"Text": "Нет",
+		"TextSize": "medium",
+		"TextHAlign": "center",
+		"ActionType": "reply",
+		"ActionBody": "No"
+	}]
+}

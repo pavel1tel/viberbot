@@ -1,0 +1,20 @@
+{
+	"Type": "keyboard",
+	"Buttons": [{
+		"Columns": 3,
+		"Rows": 2,
+		"Text": "Оплата на карту Приват Банка",
+                "TextSize": "medium",
+		"TextHAlign": "center",
+		"ActionType": "reply",
+		"ActionBody": "ПриватБанк"
+	}, {
+		"Columns": 3,
+		"Rows": 2,
+		"Text": "Наложенный платеж",
+		"TextSize": "medium",
+		"TextHAlign": "center",
+		"ActionType": "reply",
+		"ActionBody": "Наложенный платеж"
+	}]
+}

@@ -1,0 +1,20 @@
+{
+	"Type": "keyboard",
+	"Buttons": [{
+		"Columns": 3,
+		"Rows": 2,
+		"Text": "Отправитель",
+                "TextSize": "medium",
+		"TextHAlign": "center",
+		"ActionType": "reply",
+		"ActionBody": "Sender"
+	}, {
+		"Columns": 3,
+		"Rows": 2,
+		"Text": "Получатель",
+		"TextSize": "medium",
+		"TextHAlign": "center",
+		"ActionType": "reply",
+		"ActionBody": "Recipient"
+	}]
+}

@@ -1,0 +1,8 @@
+{
+    "modelName": "AddressGeneral",
+    "calledMethod": "getSettlements",
+    "methodProperties": {
+        "FindByString": ""
+    },
+    "apiKey": "01cec714d8f898f63bf3e23d010ce218"
+}

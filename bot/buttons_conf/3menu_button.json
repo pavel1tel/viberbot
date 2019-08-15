@@ -1,0 +1,52 @@
+{
+	"Type": "keyboard",
+	"Buttons": [{
+		"Columns": 6,
+		"Rows": 1,
+		"Text": "Кольцо",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Кольцо"
+	}, {
+		"Columns": 6,
+		"Rows": 1,
+		"Text": "Серьги",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Серьги"
+        },{
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Набор",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+               	"ActionBody": "Набор"
+        },{
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Подвес",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Подвес"
+        },{
+                "Columns": 6,
+		"Rows": 1,
+		"Text": "Браслет",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Браслет"
+        }, {
+               "Columns": 6,
+		"Rows": 1,
+		"Text": "Вернутся на главное меню",
+		"TextHAlign": "left",
+		"TextVAlign": "middle",
+		"ActionType": "reply",
+		"ActionBody": "Вернутся на главное меню"
+        }]
+}
