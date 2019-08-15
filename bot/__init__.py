@@ -7,6 +7,7 @@ import threading
 import time
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
+import os
 
 
 
@@ -26,7 +27,9 @@ db.init_app(app)
 migrate.init_app(app, db)
 
 def set_webhook(viber):
-    viber.set_webhook('https://a35b5edb.ngrok.io/')
+    url = os.environ.get('URL') or \
+       'https://a35b5edb.ngrok.io/'
+    viber.set_webhook(url)
 
 scheduler = sched.scheduler(time.time, time.sleep)
 scheduler.enter(7, 1, set_webhook, (viber,))
