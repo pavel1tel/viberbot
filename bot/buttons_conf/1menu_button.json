@@ -1,17 +1,21 @@
 {
 	"Type": "keyboard",
 	"Buttons": [{
-		"Columns": 3,
+		"Columns": 6,
 		"Rows": 2,
-		"Text": "Сделать заказ",
+                "Text" : "Сделать Заказ",
+                "TextOpacity" : "0",
+                "BgMedia" : "https://i.ibb.co/Sn2zJB3/zakaz.jpg",
                 "TextSize": "medium",
 		"TextHAlign": "center",
 		"ActionType": "reply",
 		"ActionBody": "Zakaz"
 	}, {
-		"Columns": 3,
+		"Columns": 6,
 		"Rows": 2,
 		"Text": "Отследить посылку по номеру ТТН",
+                "TextOpacity" : "0",
+                "BgMedia" : "https://i.ibb.co/PWqvYDp/osledit.jpg",
 		"TextSize": "medium",
 		"TextHAlign": "center",
 		"ActionType": "reply",
