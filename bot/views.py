@@ -82,7 +82,7 @@ def incoming():
                      with open('./bot/buttons_conf/2menu_button.json') as f:
                         button = json.load(f)
                      viber.send_messages(viber_request.sender.id, [
-                        TextMessage(None,None,'Выберите поставщика'),
+                        TextMessage(None,None,'Выберите производителя'),
                         KeyboardMessage(keyboard = button),
                       ])
                      quer.query_number= 'm3'
