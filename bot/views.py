@@ -332,10 +332,10 @@ def incoming():
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Спасибо за заказ! Номер ТТН: ' + str(ttn))
                     ])
-                message = f"Заказ от {usr.nickname} : "
+                message = f"Заказ от {usr.nickname} : \n\n"
                 for i in range(num+1):
                     zkz = Zakaz.query.filter_by(user = usr).all()[i]
-                    mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name}\n\n"
+                    mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name} "
                     if zkz.size:
                         mm += f"{zkz.size} "
                     mm += f"{zkz.color}. \n\n"
