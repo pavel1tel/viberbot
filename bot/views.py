@@ -38,7 +38,7 @@ def incoming():
                         zkz = Zakaz.query.filter_by(user=usr).all()[0]
                         db.session.delete(zkz)
                 quer.zakaz_num = 1
-                db.session.commit()
+            db.session.commit()
             with open('./bot/buttons_conf/1menu_button.json') as f:
                  button = json.load(f)
             viber.send_messages(viber_request.sender.id , [
