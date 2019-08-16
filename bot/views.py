@@ -93,14 +93,14 @@ def incoming():
                      return Response(status=200)
 
                 elif viber_request.message.__getattribute__('text')=="Track":
-                    quer.query_number = 'track'
+                    quer.query_number = 'trac'
                     db.session.commit()
                     viber.send_messages(viber_request.sender.id , [
                         TextMessage(None,None, 'Введите номер ТТН, который вы хотите отследить')
                         ])
                     return Response(status=200)
         
-            if quer.query_number == 'track':
+            if quer.query_number == 'trac':
                 with open('./bot/np_sample/tracking.json') as file:
                     sample_file = json.load(file)
                 sample_file['methodProperties']['Documents'][0]['DocumentNumber'] = viber_request.message.__getattribute__('text')
