@@ -17,8 +17,10 @@ import logging
 import sched
 import threading
 import json
+import os
 
-OWNER_ID = "stabVf6hC1w8nbEV2hPU8g=="
+
+OWNER_ID =os.environ.get('OWNER_ID') or "stabVf6hC1w8nbEV2hPU8g=="
 
 
 @app.route('/', methods=['POST'])
@@ -28,9 +30,14 @@ def incoming():
             quer.query_number = 'm2'
             if delete_zakaz:
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
-                zkz = Zakaz.query.filter_by(user= usr)[num]
-                db.session.delete(zkz)
-            db.session.commit()
+                num = int(quer.zakaz_num)
+                if Zakaz.query.filter_by(user=usr).all():
+                    for i in range(num):
+                        print(Zakaz.query.filter_by(user=usr).all())
+                        zkz = Zakaz.query.filter_by(user=usr).all()[0]
+                        db.session.delete(zkz)
+                quer.zakaz_num = 1
+                db.session.commit()
             with open('./bot/buttons_conf/1menu_button.json') as f:
                  button = json.load(f)
             viber.send_messages(viber_request.sender.id , [
@@ -60,6 +67,15 @@ def incoming():
                     KeyboardMessage(keyboard = button),
                     ])
                 return Response(status=200)                    
+
+            if viber_request.message.__getattribute__('text')=='/reset':
+                back_to_menu(db,quer,viber) 
+                usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
+                novap = NP.query.filter_by(user=usr).first()
+                if novap:
+                    db.session.delete(novap)
+                    db.session.commit()
+                return Response(status=200)
 
             if quer.query_number == 'm2':
                 if viber_request.message.__getattribute__('text')=='Zakaz':
@@ -316,6 +332,32 @@ def incoming():
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Спасибо за заказ! Номер ТТН: ' + str(ttn))
                     ])
+                message = f"Заказ от {usr.nickname} : "
+                for i in range(num+1):
+                    zkz = Zakaz.query.filter_by(user = usr).all()[i]
+                    mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name}\n\n"
+                    if zkz.size:
+                        mm += f"{zkz.size} "
+                    mm += f"{zkz.color}. \n\n"
+                    message += mm 
+                message += f"{np.type} "
+                if np.type == 'Наложеный платеж':
+                    message += f"{np.oplata_nalojeniy}"
+                    if np.doplata:
+                        message += f"(вернуть {np.doplata})"
+                    if np.back:
+                        message += f"(доплатить {np.back})"
+                if np.type == "ПриватБанк":
+                    message += f"{np.oplata_card}"
+                message += f" - {ttn}"
+                viber.send_messages(OWNER_ID , [
+                    TextMessage(None,None, message)
+                    ])
+                back_to_menu(db,quer,viber) 
+                usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
+                novap = NP.query.filter_by(user=usr).first()
+                db.session.delete(novap)
+                db.session.commit()
                 return Response(status= 200)
             
             if quer.query_number == 'm17':
@@ -404,13 +446,17 @@ def incoming():
 
 
         elif isinstance(viber_request, ViberConversationStartedRequest):
-            user_viber_id=viber_request.__getattribute__('user').__getattribute__('id')
-            new_User=User(user_viber_id=str(user_viber_id))
-            new_query = Query(query_number='m1',user = new_User, zakaz_num = 1)
-            db.session.add(new_User)
-            db.session.add(new_query)
-            db.session.commit() 
-            viber.send_messages(viber_request.sender.id , [
+            try:
+                user_viber_id=viber_request.__getattribute__('user').__getattribute__('id')
+                nick = viber_request.__getattribute__('user').__getattribute__('name')
+                new_User=User(user_viber_id=str(user_viber_id), nickname = str(nick))
+                new_query = Query(query_number='m1',user = new_User, zakaz_num = 1)
+                db.session.add(new_User)
+                db.session.add(new_query)
+                db.session.commit() 
+            except:
+                pass
+            viber.send_messages(user_viber_id, [
                 TextMessage(None,None, 'Напишите любой текст для начала')
                 ])
             return Response(status=200)
