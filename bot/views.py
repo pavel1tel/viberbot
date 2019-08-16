@@ -2,6 +2,7 @@ from flask import Flask, request, Response
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages.text_message import TextMessage
+from viberbot.api.messages.picture_message import PictureMessage
 from viberbot.api.viber_requests import ViberConversationStartedRequest
 from viberbot.api.viber_requests import ViberFailedRequest
 from viberbot.api.viber_requests import ViberMessageRequest
@@ -50,7 +51,6 @@ def incoming():
         viber_request = viber.parse_request(request.get_data().decode('utf8'))
         if isinstance(viber_request, ViberMessageRequest):
 
-            print(viber_request.message.__getattribute__('text')) 
             usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
             quer = Query.query.filter_by(user=usr).first()
             num = int(quer.zakaz_num) - 1             
@@ -181,7 +181,7 @@ def incoming():
                 zkz.size = viber_request.message.__getattribute__('text')
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
-                    TextMessage(None,None,'Напишите цвет изделия. Если изделие без камней, просто поставьте прочерк')
+                    TextMessage(None,None,'Напишите цвет изделия или отправте фото. Если изделие без камней, просто поставьте прочерк')
                     ])
                 return Response(status=200)
 
@@ -189,7 +189,10 @@ def incoming():
                 quer.query_number = 'm8'
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 zkz = Zakaz.query.filter_by(user= usr)[num]
-                zkz.color= viber_request.message.__getattribute__('text')
+                try:
+                    zkz.color= viber_request.message.__getattribute__('media')
+                except:
+                    zkz.color = viber_request.message.__getattribute__('text')
                 db.session.commit()
                 with open('./bot/buttons_conf/4menu_button.json') as f:
                     button = json.load(f)
@@ -338,7 +341,13 @@ def incoming():
                     mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name}\n\n"
                     if zkz.size:
                         mm += f"{zkz.size} "
-                    mm += f"{zkz.color}. \n\n"
+                    if "jpg" in zkz.color:
+                        viber.send_messages(viber_request.sender.id , [
+                            PictureMessage(media = zkz.color , text = f"{zkz.name}")
+                            ])
+                        mm += f"Изображение №{i+1}"
+                    else:
+                        mm += f"{zkz.color}. \n\n"
                     message += mm 
                 message += f"{np.type} "
                 if np.type == 'Наложеный платеж':
