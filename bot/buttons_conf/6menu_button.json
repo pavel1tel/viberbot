@@ -1,7 +1,7 @@
 {
 	"Type": "keyboard",
 	"Buttons": [{
-		"Columns": 3,
+		"Columns": 6,
 		"Rows": 2,
 		"Text": "Отправитель",
                 "TextOpacity" : "0",
@@ -11,7 +11,7 @@
 		"ActionType": "reply",
 		"ActionBody": "Sender"
 	}, {
-		"Columns": 3,
+		"Columns": 6,
 		"Rows": 2,
 		"Text": "Получатель",
                 "TextOpacity" : "0",

@@ -1,7 +1,7 @@
 {
 	"Type": "keyboard",
 	"Buttons": [{
-		"Columns": 3,
+		"Columns": 6,
 		"Rows": 2,
 		"Text": "Оплата на карту Приват Банка",
                 "TextOpacity" : "0",
@@ -11,7 +11,7 @@
 		"ActionType": "reply",
 		"ActionBody": "ПриватБанк"
 	}, {
-		"Columns": 3,
+		"Columns": 6,
 		"Rows": 2,
 		"Text": "Наложенный платеж",
                 "TextOpacity" : "0",

@@ -348,7 +348,7 @@ def incoming():
                         ])
                     return Response(status=200)
                 viber.send_messages(viber_request.sender.id , [
-                    TextMessage(None,None, 'Спасибо за заказ! Номер ТТН: ' + str(ttn))
+                    TextMessage(None,None, 'Спасибо за заказ! Номер ТТН: ' + str(ttn) + '. Номер станет активным после отправки заказа. Отследить статус посылки вы можете воспользовавшись кнопкой «Отследить ТТН»')
                     ])
                 message = f"Заказ от {usr.nickname} : \n\n"
                 for i in range(num+1):
