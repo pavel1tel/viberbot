@@ -220,7 +220,7 @@ def incoming():
                 quer.query_number = 'm10'
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
-                    TextMessage(None,None, 'Укажите отделение "Новой Почты')
+                    TextMessage(None,None, 'Укажите отделение Новой Почты')
                     ])
                 return Response(status= 200)
 
@@ -328,7 +328,13 @@ def incoming():
                 today = date.today()
                 sample_file['methodProperties']['DateTime'] = today.strftime("%d.%m.%Y")
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
-                ttn = response.json()["data"][0]['IntDocNumber']
+                try:
+                    ttn = response.json()["data"][0]['IntDocNumber']
+                except: 
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None, 'Допущена ошибка в введении данных Новой Почты. Напишите /reset и заполните все сначала')
+                        ])
+                    return Response(status=200)
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Спасибо за заказ! Номер ТТН: ' + str(ttn))
                     ])
@@ -457,7 +463,7 @@ def incoming():
             except:
                 pass
             viber.send_messages(user_viber_id, [
-                TextMessage(None,None, 'Напишите любой текст для начала')
+                TextMessage(None,None, 'Напишите любой текст для начала. Что бы все сбросить и начать сначала напишите /reset')
                 ])
             return Response(status=200)
 
