@@ -31,9 +31,9 @@ def incoming():
             quer.query_number = 'm2'
             if delete_zakaz:
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
-                num = int(quer.zakaz_num)
+                num = int(quer.zakaz_num)-1
                 if Zakaz.query.filter_by(user=usr).all():
-                    for i in range(num):
+                    for i in range(num+1):
                         print(Zakaz.query.filter_by(user=usr).all())
                         zkz = Zakaz.query.filter_by(user=usr).all()[0]
                         db.session.delete(zkz)
@@ -170,7 +170,7 @@ def incoming():
                     quer.query_number = 'm7'
                     db.session.commit()
                     viber.send_messages(viber_request.sender.id , [
-                        TextMessage(None,None,'Напишите цвет изделия. Если изделие без камней, просто поставьте прочерк')
+                        TextMessage(None,None,'Напишите цвет изделия или отправте фото. Если изделие без камней, просто поставьте прочерк')
                         ])
                     return Response(status=200)
 
@@ -347,11 +347,11 @@ def incoming():
                     mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name} "
                     if zkz.size:
                         mm += f"{zkz.size} "
-                    if "jpg" in zkz.color:
+                    if "media" in zkz.color:
                         viber.send_messages(viber_request.sender.id , [
                             PictureMessage(media = zkz.color , text = f"{zkz.name}")
                             ])
-                        mm += f"Изображение №{i+1}"
+                        mm += f"Изображение №{i+1}. \n\n"
                     else:
                         mm += f"{zkz.color}. \n\n"
                     message += mm 
