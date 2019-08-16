@@ -93,14 +93,14 @@ def incoming():
                      return Response(status=200)
 
                 elif viber_request.message.__getattribute__('text')=="Track":
-                    quer.query_number = 'track'
+                    quer.query_number = 'trac'
                     db.session.commit()
                     viber.send_messages(viber_request.sender.id , [
                         TextMessage(None,None, 'Введите номер ТТН, который вы хотите отследить')
                         ])
                     return Response(status=200)
         
-            if quer.query_number == 'track':
+            if quer.query_number == 'trac':
                 with open('./bot/np_sample/tracking.json') as file:
                     sample_file = json.load(file)
                 sample_file['methodProperties']['Documents'][0]['DocumentNumber'] = viber_request.message.__getattribute__('text')
@@ -223,7 +223,7 @@ def incoming():
                 quer.query_number = 'm10'
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
-                    TextMessage(None,None, 'Укажите отделение "Новой Почты')
+                    TextMessage(None,None, 'Укажите отделение Новой Почты')
                     ])
                 return Response(status= 200)
 
@@ -331,14 +331,20 @@ def incoming():
                 today = date.today()
                 sample_file['methodProperties']['DateTime'] = today.strftime("%d.%m.%Y")
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
-                ttn = response.json()["data"][0]['IntDocNumber']
+                try:
+                    ttn = response.json()["data"][0]['IntDocNumber']
+                except: 
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None, 'Допущена ошибка в введении данных Новой Почты. Напишите /reset и заполните все сначала')
+                        ])
+                    return Response(status=200)
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Спасибо за заказ! Номер ТТН: ' + str(ttn))
                     ])
-                message = f"Заказ от {usr.nickname} : "
+                message = f"Заказ от {usr.nickname} : \n\n"
                 for i in range(num+1):
                     zkz = Zakaz.query.filter_by(user = usr).all()[i]
-                    mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name}\n\n"
+                    mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name} "
                     if zkz.size:
                         mm += f"{zkz.size} "
                     if "jpg" in zkz.color:
@@ -466,7 +472,7 @@ def incoming():
             except:
                 pass
             viber.send_messages(user_viber_id, [
-                TextMessage(None,None, 'Напишите любой текст для начала')
+                TextMessage(None,None, 'Напишите любой текст для начала. Что бы все сбросить и начать сначала напишите /reset')
                 ])
             return Response(status=200)
 
