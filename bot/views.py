@@ -203,8 +203,17 @@ def incoming():
                 return Response(status=200)
             if quer.query_number == 'm8':
                 if viber_request.message.__getattribute__('text') == 'Yes':
-                    back_to_menu(db,quer,viber,False)
+                    quer.query_number = 'm3'
+                    with open('./bot/buttons_conf/2menu_button.json') as f:
+                         button = json.load(f)
+                    viber.send_messages(viber_request.sender.id , [
+                         TextMessage(None,None,'Выберите поставщика'),
+                         KeyboardMessage(keyboard = button),
+                            ])
                     quer.zakaz_num += 1
+                    usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
+                    zkz = Zakaz(user = usr)
+                    db.session.add(zkz)
                     db.session.commit()
                     return Response(status=200)
                 elif viber_request.message.__getattribute__('text') == 'No':
