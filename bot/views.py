@@ -421,7 +421,7 @@ def incoming():
                     if zkz.size:
                         mm += f"{zkz.size} "
                     if "media" in zkz.color:
-                        viber.send_messages(viber_request.sender.id , [
+                        viber.send_messages(OWNER_ID , [
                             PictureMessage(media = zkz.color , text = f"{zkz.name}")
                             ])
                         mm += f"Изображение №{i+1}. \n\n"
