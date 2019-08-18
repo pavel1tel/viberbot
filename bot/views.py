@@ -9,7 +9,7 @@ from viberbot.api.viber_requests import ViberMessageRequest
 from viberbot.api.viber_requests import ViberSubscribedRequest
 from viberbot.api.viber_requests import ViberUnsubscribedRequest
 from viberbot.api.messages.keyboard_message import KeyboardMessage
-from datetime import date
+from datetime import datetime
 from bot import app, db, viber
 from .model import User, Query, Zakaz, NP, Search
 import time
@@ -19,7 +19,7 @@ import sched
 import threading
 import json
 import os
-from pprint import pprint
+import pytz
 
 OWNER_ID =os.environ.get('OWNER_ID') or "stabVf6hC1w8nbEV2hPU8g=="
 
@@ -34,7 +34,6 @@ def incoming():
                 num = int(quer.zakaz_num)-1
                 if Zakaz.query.filter_by(user=usr).all():
                     for i in range(num+1):
-                        print(Zakaz.query.filter_by(user=usr).all())
                         zkz = Zakaz.query.filter_by(user=usr).all()[0]
                         db.session.delete(zkz)
                 quer.zakaz_num = 1
@@ -116,7 +115,6 @@ def incoming():
                 sample_file['methodProperties']['Documents'][0]['DocumentNumber'] = viber_request.message.__getattribute__('text')
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
                 status = response.json()['data'][0]['Status']
-                print(response.json()['data'][0]['Status'])
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Статус вашей посылки: ' + status)
                     ])
@@ -402,10 +400,10 @@ def incoming():
                 sample_file['methodProperties']['RecipientsPhone'] = str(np.phone_number) 
                 sample_file['methodProperties']['RecipientsPhone'] = str(np.phone_number) 
                 sample_file['methodProperties']['PayerType'] = str(np.oplata_dostavki) 
-                today = date.today()
+                tzkiev = pytz.timezone('Europe/Kiev')
+                today = datetime.now(tzkiev)
                 sample_file['methodProperties']['DateTime'] = today.strftime("%d.%m.%Y")
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
-                pprint(response.json()) 
                 try:
                     ttn = response.json()["data"][0]['IntDocNumber']
                 except: 
