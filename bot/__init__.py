@@ -28,7 +28,7 @@ migrate.init_app(app, db)
 
 def set_webhook(viber):
     url = os.environ.get('URL') or \
-       'https://a35b5edb.ngrok.io/'
+       'https://ac67ee8a.ngrok.io/'
     viber.set_webhook(url)
 
 scheduler = sched.scheduler(time.time, time.sleep)

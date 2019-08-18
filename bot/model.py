@@ -8,6 +8,7 @@ class User(db.Model):
     quer = db.relationship('Query', backref='user', uselist=False)
     zakazi = db.relationship('Zakaz', backref='user', uselist=True)
     novaposhta = db.relationship('NP', backref='user', uselist=False)
+    search = db.relationship('Search', backref='user', uselist=True)
     def __repr__(self):
         return f"User('{self.user_viber_id}')"
 
@@ -31,6 +32,8 @@ class Zakaz(db.Model):
 class NP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     city = db.Column(db.Text, nullable = True)
+    region = db.Column(db.Text, nullable = True)
+    area = db.Column(db.Text, nullable = True)
     adress = db.Column(db.Text, nullable = True)
     phone_number = db.Column(db.Text, nullable = True)
     recip_name = db.Column(db.Text , nullable= True)
@@ -43,4 +46,9 @@ class NP(db.Model):
     back = db.Column(db.Text, nullable = True)
     oplata_dostavki = db.Column(db.Text, nullable = True)
 
-
+class Search(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    number = db.Column(db.String(10))
+    description = db.Column(db.Text)
+    ref = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

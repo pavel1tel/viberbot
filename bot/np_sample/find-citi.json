@@ -1,8 +1,8 @@
 {
-    "modelName": "AddressGeneral",
-    "calledMethod": "getSettlements",
-    "methodProperties": {
-        "FindByString": ""
-    },
-    "apiKey": "01cec714d8f898f63bf3e23d010ce218"
+"modelName": "Address",
+"calledMethod": "getCities",
+"methodProperties": {
+"FindByString": ""
+},
+"apiKey": "0b384b2d985b261d632080c6dc3a5249"
 }

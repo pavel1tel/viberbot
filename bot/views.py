@@ -11,7 +11,7 @@ from viberbot.api.viber_requests import ViberUnsubscribedRequest
 from viberbot.api.messages.keyboard_message import KeyboardMessage
 from datetime import date
 from bot import app, db, viber
-from .model import User, Query, Zakaz, NP
+from .model import User, Query, Zakaz, NP, Search
 import time
 import requests
 import logging
@@ -19,7 +19,7 @@ import sched
 import threading
 import json
 import os
-
+from pprint import pprint
 
 OWNER_ID =os.environ.get('OWNER_ID') or "stabVf6hC1w8nbEV2hPU8g=="
 
@@ -38,7 +38,7 @@ def incoming():
                         zkz = Zakaz.query.filter_by(user=usr).all()[0]
                         db.session.delete(zkz)
                 quer.zakaz_num = 1
-                db.session.commit()
+            db.session.commit()
             with open('./bot/buttons_conf/1menu_button.json') as f:
                  button = json.load(f)
             viber.send_messages(viber_request.sender.id , [
@@ -53,6 +53,12 @@ def incoming():
 
             usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
             quer = Query.query.filter_by(user=usr).first()
+            try:
+                np = NP.query.filter_by(user = usr).first()
+                if np == None:
+                    del np
+            except:
+                pass
             num = int(quer.zakaz_num) - 1             
             if viber_request.message.__getattribute__('text') == "Вернутся на главное меню":
                 back_to_menu(db,quer,viber) 
@@ -74,6 +80,10 @@ def incoming():
                 novap = NP.query.filter_by(user=usr).first()
                 if novap:
                     db.session.delete(novap)
+                    db.session.commit()
+                src = Search.query.filter_by(user = usr)
+                if src:
+                    src.delete()
                     db.session.commit()
                 return Response(status=200)
 
@@ -132,7 +142,7 @@ def incoming():
                     with open('./bot/buttons_conf/3menu_button.json') as f:
                         button = json.load(f)
                     viber.send_messages(viber_request.sender.id , [
-                        TextMessage(None,None,'Что именно вы хоите заказать?'),
+                        TextMessage(None,None,'Что именно вы хотите заказать?'),
                         KeyboardMessage(keyboard = button),
                         ])
                     return Response(status=200)
@@ -217,7 +227,7 @@ def incoming():
                     db.session.commit()
                     return Response(status=200)
                 elif viber_request.message.__getattribute__('text') == 'No':
-                    quer.query_number = 'm9'
+                    quer.query_number = 'b1'
                     usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first() 
                     np = NP(user = usr)
                     db.session.commit()
@@ -225,10 +235,44 @@ def incoming():
                         TextMessage(None,None, 'Напишите город получателя')
                         ])
                     return Response(status= 200)
+            if quer.query_number == 'b1' and viber_request.message.__getattribute__('text') != np.city:
+                np.city = viber_request.message.__getattribute__('text')
+                viber.send_messages(viber_request.sender.id , [
+                    TextMessage(None,None, 'Напишите порядковый номер города')
+                    ])
+                with open('./bot/np_sample/find-citi.json') as file:
+                    sample_file = json.load(file)
+                sample_file['methodProperties']['FindByString'] = viber_request.message.__getattribute__('text')
+                response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
+                i = 1
+                for city in response.json()["data"]:
+                    usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
+                    description = city['DescriptionRu']
+                    ref = city['Ref']
+                    src = Search(number = i,
+                                description = description,
+                                ref = ref,
+                                user = usr)
+                    i += 1
+                    db.session.add(src)
+                quer.query_number = 'm9'
+                db.session.commit()
+                scr = Search.query.filter_by(user=usr)
+                i = 1
+                for city in scr:
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None, f'{i}. {city.description}')
+                        ])
+                    i += 1
+                return Response(status = 200)
+            
             if quer.query_number == 'm9':
+                city_number = viber_request.message.__getattribute__('text')
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
-                np.city = viber_request.message.__getattribute__('text')
+                src = Search.query.filter_by(user=usr, number = city_number).first()
+                np.city = src.ref
+                Search.query.filter_by(user=usr).delete()
                 quer.query_number = 'm10'
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
@@ -239,7 +283,12 @@ def incoming():
             if quer.query_number == 'm10':
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
-                np.adress = viber_request.message.__getattribute__('text')
+                with open('./bot/np_sample/find_adress.json') as file:
+                    sample_file = json.load(file)
+                sample_file['methodProperties']['CityRef'] = np.city
+                response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
+                adr = viber_request.message.__getattribute__('text')
+                np.adress = response.json()['data'][int(adr)-1]['Ref']
                 quer.query_number = 'm11'
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
@@ -324,6 +373,20 @@ def incoming():
                 np = NP.query.filter_by(user=usr).first()
                 np.oplata_dostavki = viber_request.message.__getattribute__('text')
                 db.session.commit()
+                with open('./bot/np_sample/create_person.json') as file:
+                        sample_file = json.load(file)
+                name = np.recip_name.split(" ")
+                sample_file["methodProperties"]["FirstName"] = name[1]
+                sample_file["methodProperties"]["LastName"] = name[0]
+                try:
+                    sample_file["methodProperties"]["MiddleName"] = name[2]
+                except:
+                    pass
+                sample_file["methodProperties"]["Phone"] = np.phone_number
+                response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
+                np.recip_name = response.json()['data'][0]["Ref"]
+                np.area = response.json()['data'][0]['ContactPerson']['data'][0]["Ref"]
+                db.session.commit()
                 if np.type == 'Наложеный платеж':
                     with open('./bot/np_sample/naloj-send.json') as file:
                         sample_file = json.load(file)
@@ -332,14 +395,17 @@ def incoming():
                     with open('./bot/np_sample/card-send.json') as file:
                         sample_file = json.load(file)
                 sample_file['methodProperties']['Cost'] = str(np.price) 
-                sample_file['methodProperties']['RecipientCityName'] = str(np.city) 
-                sample_file['methodProperties']['RecipientAddressName'] = str(np.adress) 
-                sample_file['methodProperties']['RecipientName'] = str(np.recip_name)
-                sample_file['methodProperties']['RecipientsPhone'] = str(np.phone_number)
-                sample_file['methodProperties']['PayerType'] = str(np.oplata_dostavki)
+                sample_file['methodProperties']['CityRecipient'] = str(np.city) 
+                sample_file['methodProperties']['Recipient'] = str(np.recip_name) 
+                sample_file['methodProperties']['RecipientAddress'] = str(np.adress) 
+                sample_file['methodProperties']['ContactRecipient'] = str(np.area) 
+                sample_file['methodProperties']['RecipientsPhone'] = str(np.phone_number) 
+                sample_file['methodProperties']['RecipientsPhone'] = str(np.phone_number) 
+                sample_file['methodProperties']['PayerType'] = str(np.oplata_dostavki) 
                 today = date.today()
                 sample_file['methodProperties']['DateTime'] = today.strftime("%d.%m.%Y")
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
+                pprint(response.json()) 
                 try:
                     ttn = response.json()["data"][0]['IntDocNumber']
                 except: 

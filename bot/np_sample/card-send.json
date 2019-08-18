@@ -18,14 +18,10 @@
             "SenderAddress": "00000000-0000-0000-0000-000000000000",
             "ContactSender": "a60287c5-ccc7-11e8-8b24-005056881c6b",
             "SendersPhone": "380637097993",
-            "RecipientCityName": "",
-            "RecipientArea": "",
-            "RecipientAreaRegions": "",
-            "RecipientAddressName": "",
-            "RecipientHouse": "",
-            "RecipientFlat": "",
-            "RecipientName": "",
-            "RecipientType": "PrivatePerson",
+            "CityRecipient": "494cd1e9-5229-11e9-acea-005056b24375",
+            "Recipient": "5dce021e-53f9-11e6-a54a-005056801333",
+            "RecipientAddress": "e2d3d0f3-579b-11e9-acea-005056b24375",
+            "ContactRecipient": "ef017d41-c13c-11e9-9937-005056881c6b",
             "RecipientsPhone": "",
             "DateTime": ""
     }
