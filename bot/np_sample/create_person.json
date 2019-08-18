@@ -1,0 +1,14 @@
+{
+    "apiKey": "0b384b2d985b261d632080c6dc3a5249",
+    "modelName": "Counterparty",
+    "calledMethod": "save",
+    "methodProperties": {
+        "FirstName": "",
+        "MiddleName": "",
+        "LastName": "",
+        "Phone": "",
+        "Email": "",
+        "CounterpartyType": "PrivatePerson",
+        "CounterpartyProperty": "Recipient"
+    }
+}
