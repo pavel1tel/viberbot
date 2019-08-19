@@ -20,7 +20,6 @@ import threading
 import json
 import os
 import pytz
-
 OWNER_ID =os.environ.get('OWNER_ID') or "stabVf6hC1w8nbEV2hPU8g=="
 
 
@@ -356,7 +355,7 @@ def incoming():
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
                 np.oplata_card = viber_request.message.__getattribute__('text')
-                quer.query_number = 'm16'
+                quer.query_number = 'y1'
                 db.session.commit()
                 with open('./bot/buttons_conf/6menu_button.json') as f:
                      button = json.load(f)
@@ -365,12 +364,42 @@ def incoming():
                     KeyboardMessage(keyboard = button),
                     ])
                 return Response(status= 200)
+            if quer.query_number == 'y1':
+                usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
+                np = NP.query.filter_by(user=usr).first()
+                np.oplata_dostavki = viber_request.message.__getattribute__('text')
+                quer.query_number = 'y2'
+                db.session.commit()
+                with open('./bot/buttons_conf/4menu_button.json') as f:
+                     button = json.load(f)
+                viber.send_messages(viber_request.sender.id , [
+                    TextMessage(None,None,'Есть комментарии к заказу?'),
+                    KeyboardMessage(keyboard = button),
+                    ])
+                return Response(status=200)
+            if quer.query_number == 'y2':
+                if viber_request.message.__getattribute__('text') == 'Yes':
+                    quer.query_number = 'y3'
+                    db.session.commit()
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None,'Напишите ваши пожелания')
+                        ])
+                    return Response(status=200)
+            
+                if viber_request.message.__getattribute__('text') == 'No':
+                    quer.query_number = 'm16'
+                    db.session.commit()
+
+            if quer.query_number == 'y3':
+                usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
+                np = NP.query.filter_by(user=usr).first()
+                np.region = viber_request.message.__getattribute__('text')
+                quer.query_number = 'm16'
+                db.session.commit()
 
             if quer.query_number == 'm16':
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
-                np.oplata_dostavki = viber_request.message.__getattribute__('text')
-                db.session.commit()
                 with open('./bot/np_sample/create_person.json') as file:
                         sample_file = json.load(file)
                 name = np.recip_name.split(" ")
@@ -441,6 +470,10 @@ def incoming():
                 viber.send_messages(OWNER_ID , [
                     TextMessage(None,None, message)
                     ])
+                if np.region:
+                    viber.send_messages(OWNER_ID , [
+                        TextMessage(None,None, f"Коментарий: {np.region}")
+                        ])
                 back_to_menu(db,quer,viber) 
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id ).first()
                 novap = NP.query.filter_by(user=usr).first()
@@ -485,7 +518,7 @@ def incoming():
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
                 np.doplata  = viber_request.message.__getattribute__('text')
-                quer.query_number = 'm16'  
+                quer.query_number = 'y1'  
                 db.session.commit()
                 with open('./bot/buttons_conf/6menu_button.json') as f:
                      button = json.load(f)
@@ -498,8 +531,7 @@ def incoming():
 
             if quer.query_number == 'm20':
                 if viber_request.message.__getattribute__('text') == 'No':
-
-                    quer.query_number = 'm16'  
+                    quer.query_number = 'y1'  
                     db.session.commit()
                     with open('./bot/buttons_conf/6menu_button.json') as f:
                          button = json.load(f)
@@ -522,7 +554,7 @@ def incoming():
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
                 np.back  = viber_request.message.__getattribute__('text')
-                quer.query_number = 'm16'  
+                quer.query_number = 'y1'  
                 db.session.commit()
                 with open('./bot/buttons_conf/6menu_button.json') as f:
                      button = json.load(f)
