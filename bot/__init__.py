@@ -12,7 +12,7 @@ import os
 
 
 viber = Api(BotConfiguration(
-  name='JewleryNPBot',
+  name='JuliasAssistant',
   avatar='https://i.ibb.co/vc2gJBZ/logo.jpg',
   auth_token='4a1b33b858e7d578-e6ce7d64ca970f8e-8354ce174ff89d95'
 ))
