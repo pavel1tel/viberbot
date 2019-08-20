@@ -285,7 +285,9 @@ def incoming():
                 sample_file['methodProperties']['CityRef'] = np.city
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
                 adr = viber_request.message.__getattribute__('text')
-                np.adress = response.json()['data'][int(adr)-1]['Ref']
+                for otdel in response.json()['data']:
+                    if otdel['Number'] == str(adr):
+                        np.adress = otdel['Ref']
                 quer.query_number = 'm11'
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
