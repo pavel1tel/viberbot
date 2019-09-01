@@ -177,7 +177,7 @@ def incoming():
                     quer.query_number = 'm7'
                     db.session.commit()
                     viber.send_messages(viber_request.sender.id , [
-                        TextMessage(None,None,'Напишите цвет изделия или отправте фото. Если изделие без камней, просто поставьте прочерк')
+                        TextMessage(None,None,'Напишите цвет изделия или отправьте фото. Если изделие без камней, просто поставьте прочерк')
                         ])
                     return Response(status=200)
 
@@ -214,7 +214,7 @@ def incoming():
                     with open('./bot/buttons_conf/2menu_button.json') as f:
                          button = json.load(f)
                     viber.send_messages(viber_request.sender.id , [
-                         TextMessage(None,None,'Выберите поставщика'),
+                         TextMessage(None,None,'Выберите п производителя'),
                          KeyboardMessage(keyboard = button),
                             ])
                     quer.zakaz_num += 1
