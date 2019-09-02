@@ -32,7 +32,11 @@ def set_webhook(viber):
            'https://ac67ee8a.ngrok.io/'
         viber.set_webhook(url)
     except:
-        print(sys.exc_info())
+        a = sys.exc_info()[1]
+        if str(a) =='failed with status: 999, message: DB Failure':
+            pass
+        else:
+            raise
 scheduler = sched.scheduler(time.time, time.sleep)
 scheduler.enter(7, 1, set_webhook, (viber,))
 t = threading.Thread(target=scheduler.run)
