@@ -8,6 +8,7 @@ import time
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
 import os
+import sys
 
 
 
@@ -31,7 +32,7 @@ def set_webhook(viber):
            'https://ac67ee8a.ngrok.io/'
         viber.set_webhook(url)
     except:
-        pass
+        print(sys.exc_info()[0])
 scheduler = sched.scheduler(time.time, time.sleep)
 scheduler.enter(7, 1, set_webhook, (viber,))
 t = threading.Thread(target=scheduler.run)
