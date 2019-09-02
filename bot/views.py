@@ -23,10 +23,10 @@ import pytz
 OWNER_ID =os.environ.get('OWNER_ID') or "stabVf6hC1w8nbEV2hPU8g=="
 
 
-@app.route('/exc', methods=['POST'])
+@app.route('/exc', methods=['GET'])
 def test_exc():
     raise Exception('Test Exception')
-    return
+    return Response(status=200)
 
 @app.route('/', methods=['POST'])
 def incoming():
