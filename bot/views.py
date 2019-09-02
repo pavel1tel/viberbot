@@ -24,9 +24,9 @@ OWNER_ID =os.environ.get('OWNER_ID') or "stabVf6hC1w8nbEV2hPU8g=="
 
 
 @app.route('/exc', methods=['POST'])
-    def test_exc():
-        raise Exception('Test Exception')
-        return
+def test_exc():
+    raise Exception('Test Exception')
+    return
 
 @app.route('/', methods=['POST'])
 def incoming():
