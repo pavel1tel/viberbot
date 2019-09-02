@@ -32,7 +32,7 @@ def set_webhook(viber):
            'https://ac67ee8a.ngrok.io/'
         viber.set_webhook(url)
     except:
-        print(sys.exc_info()[0])
+        print(sys.exc_info())
 scheduler = sched.scheduler(time.time, time.sleep)
 scheduler.enter(7, 1, set_webhook, (viber,))
 t = threading.Thread(target=scheduler.run)
