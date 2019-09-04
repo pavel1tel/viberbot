@@ -303,7 +303,7 @@ def incoming():
             if quer.query_number == 'm11':
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
-                np.phone_number = viber_request.message.__getattribute__('text')
+                np.phone_number = viber_request.message.__getattribute__('text').replace(" ", "").replace("+","")
                 quer.query_number = 'm12'
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
@@ -418,8 +418,13 @@ def incoming():
                     pass
                 sample_file["methodProperties"]["Phone"] = np.phone_number
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
-                np.recip_name = response.json()['data'][0]["Ref"]
-                np.area = response.json()['data'][0]['ContactPerson']['data'][0]["Ref"]
+                try:
+                    np.recip_name = response.json()['data'][0]["Ref"]
+                    np.area = response.json()['data'][0]['ContactPerson']['data'][0]["Ref"]
+                except:
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None, 'Допущена ошибка в введении данных получателя. Напишите /reset и заполните все сначала')
+                        ])
                 db.session.commit()
                 if np.type == 'Наложеный платеж':
                     with open('./bot/np_sample/naloj-send.json') as file:
@@ -583,9 +588,12 @@ def incoming():
                 db.session.commit() 
             except:
                 pass
+            try:
             viber.send_messages(user_viber_id, [
                 TextMessage(None,None, 'Напишите любой текст для начала. Что бы все сбросить и начать сначала напишите /reset')
                 ])
+            except:
+                pass
             return Response(status=200)
 
 
