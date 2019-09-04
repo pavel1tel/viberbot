@@ -589,9 +589,9 @@ def incoming():
             except:
                 pass
             try:
-            viber.send_messages(user_viber_id, [
-                TextMessage(None,None, 'Напишите любой текст для начала. Что бы все сбросить и начать сначала напишите /reset')
-                ])
+                viber.send_messages(user_viber_id, [
+                    TextMessage(None,None, 'Напишите любой текст для начала. Что бы все сбросить и начать сначала напишите /reset')
+                    ])
             except:
                 pass
             return Response(status=200)
