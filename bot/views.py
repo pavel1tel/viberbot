@@ -466,7 +466,7 @@ def incoming():
                     mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name} "
                     if zkz.size:
                         mm += f"{zkz.size} "
-                    if !zkz.color:
+                    if not zkz.color:
                         zkz.color = "-"
                         db.session.commit()
                     
