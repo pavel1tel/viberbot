@@ -410,8 +410,13 @@ def incoming():
                 with open('./bot/np_sample/create_person.json') as file:
                         sample_file = json.load(file)
                 name = np.recip_name.split(" ")
-                sample_file["methodProperties"]["FirstName"] = name[1]
-                sample_file["methodProperties"]["LastName"] = name[0]
+                try:
+                    sample_file["methodProperties"]["FirstName"] = name[1]
+                    sample_file["methodProperties"]["LastName"] = name[0]
+                except:
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None, 'Допущена ошибка в введении имени получателя. Напишите /reset и заполните все сначала')
+                        ])
                 try:
                     sample_file["methodProperties"]["MiddleName"] = name[2]
                 except:
@@ -461,6 +466,10 @@ def incoming():
                     mm = f"{i+1}. {zkz.provider} {zkz.type} {zkz.name} "
                     if zkz.size:
                         mm += f"{zkz.size} "
+                    if !zkz.color:
+                        zkz.color = "-"
+                        db.session.commit()
+                    
                     if "media" in zkz.color:
                         viber.send_messages(OWNER_ID , [
                             PictureMessage(media = zkz.color , text = f"{zkz.name}")
