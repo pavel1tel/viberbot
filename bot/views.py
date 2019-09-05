@@ -273,7 +273,11 @@ def incoming():
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
                 src = Search.query.filter_by(user=usr, number = city_number).first()
+                try:
                 np.city = src.ref
+                except:
+                    TextMessage(None,None, 'Неправильно указан город')
+                        ])
                 Search.query.filter_by(user=usr).delete()
                 quer.query_number = 'm10'
                 db.session.commit()
