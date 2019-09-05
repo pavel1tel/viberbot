@@ -276,6 +276,7 @@ def incoming():
                 try:
                     np.city = src.ref
                 except:
+                    viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Неправильно указан город')
                         ])
                 Search.query.filter_by(user=usr).delete()
