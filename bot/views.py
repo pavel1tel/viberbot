@@ -274,7 +274,7 @@ def incoming():
                 np = NP.query.filter_by(user=usr).first()
                 src = Search.query.filter_by(user=usr, number = city_number).first()
                 try:
-                np.city = src.ref
+                    np.city = src.ref
                 except:
                     TextMessage(None,None, 'Неправильно указан город')
                         ])
