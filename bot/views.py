@@ -177,7 +177,7 @@ def incoming():
                         KeyboardMessage(keyboard = button),
                         ])
                     db.session.commit()
-                        return Response(status=200)
+                    return Response(status=200)
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Напишите наименование (артикул) изделия')
