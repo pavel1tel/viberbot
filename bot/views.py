@@ -132,6 +132,17 @@ def incoming():
                     usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                     zkz = Zakaz.query.filter_by(user= usr)[num]
                     zkz.provider = viber_request.message.__getattribute__('text')
+                    if not zkz.provider:
+                        quer.query_number = 'm3'
+                        with open('./bot/buttons_conf/2menu_button.json') as f:
+                            button = json.load(f)
+                        viber.send_messages(viber_request.sender.id, [
+                            TextMessage(None,None,'Выберите производителя'),
+                            KeyboardMessage(keyboard = button),
+                        ])
+                        db.session.commit()
+                        return Response(status=200)
+
                     if viber_request.message.__getattribute__('text') == "Цепочки":
                         quer.query_number = 'm5'
                         zkz.type = "Цепочка"
@@ -157,6 +168,16 @@ def incoming():
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 zkz = Zakaz.query.filter_by(user= usr)[num]
                 zkz.type = viber_request.message.__getattribute__('text')
+                if not zkz.type:
+                    quer.query_number = 'm'
+                    with open('./bot/buttons_conf/3menu_button.json') as f:
+                        button = json.load(f)
+                    viber.send_messages(viber_request.sender.id , [
+                        TextMessage(None,None,'Что именно вы хотите заказать?'),
+                        KeyboardMessage(keyboard = button),
+                        ])
+                    db.session.commit()
+                        return Response(status=200)
                 db.session.commit()
                 viber.send_messages(viber_request.sender.id , [
                     TextMessage(None,None, 'Напишите наименование (артикул) изделия')
