@@ -435,7 +435,7 @@ def incoming():
                 np = NP.query.filter_by(user=usr).first()
                 for i in range(num+1):
                     zkz = Zakaz.query.filter_by(user = usr).all()[i]
-                    if not all(zkz.type,zkz.provider,zkz.name]):
+                    if not all([zkz.type,zkz.provider,zkz.name]) :
                         viber.send_messages(viber_request.sender.id , [
                             TextMessage(None,None, 'Упс! что то пошло не так,напишите /reset и заполните все сначало(')
                             ])
