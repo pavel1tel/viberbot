@@ -169,7 +169,7 @@ def incoming():
                 zkz = Zakaz.query.filter_by(user= usr)[num]
                 zkz.type = viber_request.message.__getattribute__('text')
                 if not zkz.type:
-                    quer.query_number = 'm'
+                    quer.query_number = 'm4'
                     with open('./bot/buttons_conf/3menu_button.json') as f:
                         button = json.load(f)
                     viber.send_messages(viber_request.sender.id , [
