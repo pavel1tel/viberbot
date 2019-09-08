@@ -438,8 +438,9 @@ def incoming():
                     zkz = Zakaz.query.filter_by(user = usr).all()[i]
                     if not all([zkz.type,zkz.provider,zkz.name]) :
                         viber.send_messages(viber_request.sender.id , [
-                            TextMessage(None,None, 'Упс! что то пошло не так,напишите /reset и заполните все сначало(')
+                            TextMessage(None,None, 'Упс! что-то пошло не так,напишите /reset и заполните все сначала(')
                             ])
+                        return Response(status=200)
                 with open('./bot/np_sample/create_person.json') as file:
                         sample_file = json.load(file)
                 name = np.recip_name.split(" ")
