@@ -438,7 +438,7 @@ def incoming():
                         zkz.type = viber_request.message.__getattribute__('text')
                         quer.query_number = 'm16'
                         db.session.commit()
-                        return Response(status=200
+                        return Response(status=200)
                                         
             if quer.query_number == 'b':
                 for i in range(num+1):
