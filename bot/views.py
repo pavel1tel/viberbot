@@ -430,17 +430,87 @@ def incoming():
                 np.region = viber_request.message.__getattribute__('text')
                 quer.query_number = 'm16'
                 db.session.commit()
+                
+            if quer.query_number == 'a':
+                for i in range(num+1):
+                    zkz = Zakaz.query.filter_by(user = usr).all()[i]
+                    if not zkz.type :
+                        zkz.type = viber_request.message.__getattribute__('text')
+                        quer.query_number = 'm16'
+                        db.session.commit()
+                        return Response(status=200
+                                        
+            if quer.query_number == 'b':
+                for i in range(num+1):
+                    zkz = Zakaz.query.filter_by(user = usr).all()[i]
+                    if not zkz.provider :
+                        zkz.provider = viber_request.message.__getattribute__('text')
+                        quer.query_number = 'm16'
+                        db.session.commit()
+                        return Response(status=200)
+                                        
+            if quer.query_number == 'c':
+                for i in range(num+1):
+                    zkz = Zakaz.query.filter_by(user = usr).all()[i]
+                    if not zkz.name :
+                        zkz.name = viber_request.message.__getattribute__('text')
+                        quer.query_number = 'm16'
+                        db.session.commit()
+                        return Response(status=200)
+                                        
+            if quer.query_number == 'd':
+                for i in range(num+1):
+                    zkz = Zakaz.query.filter_by(user = usr).all()[i]
+                    if not zkz.color :
+                        zkz.color = viber_request.message.__getattribute__('text')
+                        quer.query_number = 'm16'
+                        db.session.commit()
+                        return Response(status=200)
 
+             
             if quer.query_number == 'm16':
                 usr = User.query.filter_by(user_viber_id=viber_request.sender.id).first()
                 np = NP.query.filter_by(user=usr).first()
                 for i in range(num+1):
                     zkz = Zakaz.query.filter_by(user = usr).all()[i]
-                    if not all([zkz.type,zkz.provider,zkz.name]) :
+                    if not zkz.type or zkz.type == "Zakaz" :
+                        with open('./bot/buttons_conf/3menu_button.json') as f:
+                            button = json.load(f)
                         viber.send_messages(viber_request.sender.id , [
-                            TextMessage(None,None, 'Упс! что-то пошло не так,напишите /reset и заполните все сначала(')
+                            TextMessage(None,None,'Уточните пожалуйста еще раз тип'),
+                            KeyboardMessage(keyboard = button),
                             ])
+                        quer.query_number = 'a'
+                        db.session.commit()
                         return Response(status=200)
+                                        
+                    elif not zkz.provider or zkz.provider == "Zakaz" :
+                        with open('./bot/buttons_conf/2menu_button.json') as f:
+                            button = json.load(f)
+                        viber.send_messages(viber_request.sender.id, [
+                            TextMessage(None,None,'Уточните производителя пожалуйста'),
+                            KeyboardMessage(keyboard = button),
+                        ])
+                        quer.query_number = 'b'
+                        db.session.commit()
+                        return Response(status=200)
+                                        
+                    elif not zkz.name or zkz.name == "Zakaz":
+                        viber.send_messages(viber_request.sender.id , [
+                            TextMessage(None,None, 'Уточните пожалуйста артикул еще раз')
+                            ])
+                        quer.query_number = 'с'
+                        db.session.commit()
+                        return Response(status=200)
+                                        
+                    if not zkz.color or zkz.color == "Zakaz" :
+                        viber.send_messages(viber_request.sender.id , [
+                            TextMessage(None,None, 'Уточните цвет изделия или отправте фото')
+                            ])
+                        quer.query_number = 'd'
+                        db.session.commit()
+                        return Response(status=200)
+                                        
                 with open('./bot/np_sample/create_person.json') as file:
                         sample_file = json.load(file)
                 name = np.recip_name.split(" ")
