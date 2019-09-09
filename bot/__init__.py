@@ -48,6 +48,8 @@ if not app.debug:
 
 def set_webhook(viber):
     try:
+        viber._set_webhook("")
+        time.sleep(1)
         url = os.environ.get('URL') or \
            'https://ac67ee8a.ngrok.io/'
         viber.set_webhook(url)
