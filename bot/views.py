@@ -556,7 +556,7 @@ def incoming():
                 response = requests.post('https://api.novaposhta.ua/v2.0/json/', data = json.dumps(sample_file))
                 try:
                     print(response.json())
-                    #ttn = response.json()["data"][0]['IntDocNumber']
+                    ttn = response.json()["data"][0]['IntDocNumber']
                 except: 
                     viber.send_messages(viber_request.sender.id , [
                         TextMessage(None,None, 'Допущена ошибка в введении данных Новой Почты. Напишите /reset и заполните все сначала')
