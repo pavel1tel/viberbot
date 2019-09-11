@@ -27,7 +27,7 @@
             "BackwardDeliveryData": [ 
                         { 
                         "PayerType": "Recipient", 
-                        "CargoType": "Money", 
+                        "CargoType": "Other", 
                         "RedeliveryString": "" 
                         } ]
     }
