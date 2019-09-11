@@ -477,7 +477,7 @@ def incoming():
                         with open('./bot/buttons_conf/3menu_button.json') as f:
                             button = json.load(f)
                         viber.send_messages(viber_request.sender.id , [
-                            TextMessage(None,None, f'Уточните пожалуйста еще раз тип {i} заказа'),
+                            TextMessage(None,None, f'Уточните пожалуйста еще раз тип {i+1} заказа'),
                             KeyboardMessage(keyboard = button),
                             ])
                         quer.query_number = 'a'
@@ -488,7 +488,7 @@ def incoming():
                         with open('./bot/buttons_conf/2menu_button.json') as f:
                             button = json.load(f)
                         viber.send_messages(viber_request.sender.id, [
-                            TextMessage(None,None,f'Уточните производителя {i} заказа пожалуйста'),
+                            TextMessage(None,None,f'Уточните производителя {i+1} заказа пожалуйста'),
                             KeyboardMessage(keyboard = button),
                         ])
                         quer.query_number = 'b'
@@ -497,7 +497,7 @@ def incoming():
                                         
                     elif not zkz.name or zkz.name == "Zakaz":
                         viber.send_messages(viber_request.sender.id , [
-                            TextMessage(None,None, f'Уточните пожалуйста артикул {i} заказа еще раз')
+                            TextMessage(None,None, f'Уточните пожалуйста артикул {i+1} заказа еще раз')
                             ])
                         quer.query_number = 'с'
                         db.session.commit()
@@ -505,7 +505,7 @@ def incoming():
                                         
                     if not zkz.color or zkz.color == "Zakaz" :
                         viber.send_messages(viber_request.sender.id , [
-                            TextMessage(None,None, f'Уточните цвет изделия или отправте фото {i} заказа')
+                            TextMessage(None,None, f'Уточните цвет изделия или отправте фото {i+1} заказа')
                             ])
                         quer.query_number = 'd'
                         db.session.commit()
