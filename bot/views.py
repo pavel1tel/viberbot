@@ -30,7 +30,7 @@ def test_exc():
     return Response(status=200)
 
 @app.route('/ping', methods=['GET'])
-def test_exc():
+def ping_bot():
     return Response(status=200)
 
 @app.route('/', methods=['POST'])
