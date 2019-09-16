@@ -15,7 +15,7 @@
             "Cost": "",
             "CitySender": "e7148607-4b33-11e4-ab6d-005056801329",
             "Sender": "5dc3439b-53f9-11e6-a54a-005056801333",
-            "SenderAddress": "00000000-0000-0000-0000-000000000000",
+            "SenderAddress": "85da90aa-0ac7-11e5-8a92-005056887b8d",
             "ContactSender": "a60287c5-ccc7-11e8-8b24-005056881c6b",
             "SendersPhone": "380637097993",
             "CityRecipient": "",
@@ -27,7 +27,7 @@
             "BackwardDeliveryData": [ 
                         { 
                         "PayerType": "Recipient", 
-                        "CargoType": "Other", 
+                        "CargoType": "Money", 
                         "RedeliveryString": "" 
                         } ]
     }
